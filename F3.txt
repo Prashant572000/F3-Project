@@ -1,0 +1,72 @@
+admin panel (insert, update, delete, add, report download)
+client panel(show, download)
+staff panel (upload and dwonload files)
+
+<?php 
+
+$conn= new mysqli("182.50.133.85:3306" , "f3interndb" , "#!#(@th@kurs@)","f3interndb")
+if($conn==false) {
+    echo "Database not connected";
+}
+
+
+three partition 
+1. orders  (select database OR client name, select excel file, or submit button to store database)
+2. payment (select database OR client name, select excel file, or submit button to store database)
+3. returns (select database OR client name, select excel file, or submit button to store database)
+
+
+Order
+--------------
+Order ID
+Portal SKU
+-------------
+
+Payment
+----------------
+PAYMENT_DATE
+Order_Id
+RECEIVED_AMOUNT
+----------------
+
+Return
+----------------
+Order ID
+----------------
+
+
+TO FIND THE DUPLICATE ROWS QUERY IS:: 
+SELECT Order_ID,PORTAL_SKU,Count(*) FROM `orders` GROUP BY Order_ID,PORTAL_SKU HAVING COUNT(*) >1
+**901 DUPLICATE ROWS WITH order_id and prtal sku**
+
+
+TO FIND THE DUPLICATE ROWS QUERY IS:: 
+SELECT PORTAL,ORDER_DATE,Order_ID,PORTAL_SKU,PINCODE,STATE,ZONE,BILL_FROM_STATE,QTY,AMOUNT,STATUS,Count(*) FROM `orders` GROUP BY PORTAL,ORDER_DATE,Order_ID,PORTAL_SKU,PINCODE,STATE,ZONE,BILL_FROM_STATE,QTY,AMOUNT,STATUS HAVING COUNT(*) >1
+**589 DUPLICATE ROWS WITH ALL ENTRIES**
+                                      OR
+SELECT EmpName,Departmemt,Age,Gender,Salary,Count(*) FROM `empdetail` 
+GROUP BY EmpName,Departmemt,Age,Gender,Salary
+HAVING COUNT(*) >1
+                                     OR
+SELECT PAYMENT_DATE,Order_Id,RECEIVED_AMOUNT,Count(*) FROM `payments`
+GROUP BY PAYMENT_DATE,Order_Id,RECEIVED_AMOUNT 
+HAVING COUNT(*) >1
+                                        OR
+SELECT Order_Id,Count(*) FROM `returns`
+GROUP BY Order_Id 
+HAVING COUNT(*) >1
+
+
+TO DELETE THE DUPLICATE ROWS QUERY IS:
+DELETE FROM `orders` WHERE ID NOT IN(
+SELECT MAX(ID) FROM `orders` GROUP BY Order_ID,PORTAL_SKU)
+                                       OR
+DELETE FROM `empdetail` WHERE ID NOT IN(
+SELECT MAX(ID) FROM `orders` GROUP BY EmpName,Departmemt,Age,Gender,Salary)
+                                        OR
+DELETE FROM `payments` WHERE ID NOT IN(
+SELECT MAX(ID) FROM `payments` GROUP BY PAYMENT_DATE,Order_Id,RECEIVED_AMOUNT)
+                                         OR
+DELETE FROM `returns` WHERE ID NOT IN(
+SELECT MAX(ID) FROM `returns` GROUP BY Order_Id)
+

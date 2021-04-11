@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+@keyframes anione{
+    from {background-color: #CE91F2;}
+    to {background-color: #91F2EF;}
+  }
+body{
+  
+  animation-name: anione;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+} 
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
